@@ -1,12 +1,16 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+// NOTE: Controllerの責務はエンドポイントを作成すること。
 
-@Controller()
+import { Controller, Get } from '@nestjs/common';
+
+@Controller('report/income')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  @Get()
+  getAllIncomeReports() {
+    return [];
+  }
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getAllIncomeReports2() {
+    return {};
   }
 }
