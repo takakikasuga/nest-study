@@ -2,14 +2,14 @@
 
 import { Controller, Get } from '@nestjs/common';
 
-@Controller('report/income')
+@Controller('report/:type')
 export class AppController {
   @Get()
   getAllIncomeReports() {
     return [];
   }
 
-  @Get()
+  @Get(':id')
   getAllIncomeReports2() {
     return {};
   }
