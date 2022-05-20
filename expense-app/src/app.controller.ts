@@ -12,14 +12,19 @@ export class AppController {
       type === MappedReport.expense
         ? MappedReport.expense
         : MappedReport.income;
-    return data.report.filter((report) => {
-      report.type === reportType;
-    });
+    return data.report.filter((report) => report.type === reportType);
   }
 
   @Get(':id')
-  getReportById() {
-    return {};
+  getReportById(@Param('type') type: string, @Param('id') id: string) {
+    const reportType =
+      type === MappedReport.expense
+        ? MappedReport.expense
+        : MappedReport.income;
+    console.table({ type, id, reportType });
+    return data.report
+      .filter((report) => report.type === reportType)
+      .find((report) => report.id === id);
   }
 
   @Post()
