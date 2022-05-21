@@ -12,9 +12,12 @@ import {
 } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 import { data, MappedReport } from './data';
+import { AppService } from './app.service';
 
 @Controller('report/:type')
 export class AppController {
+  constructor(private readonly appService: AppService) {}
+
   @Get()
   getAllReports(@Param('type') type: string) {
     console.log('type === ', type);
@@ -22,7 +25,7 @@ export class AppController {
       type === MappedReport.expense
         ? MappedReport.expense
         : MappedReport.income;
-    return data.report.filter((report) => report.type === reportType);
+    return this.appService.getAllReports(reportType);
   }
 
   @Get(':id')
