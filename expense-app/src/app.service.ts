@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 
-import { data, MappedReport } from './data';
+import { data } from './data';
 import type { MappedReportLiteralType } from './data';
 
 type ReportDataType = {

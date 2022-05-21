@@ -9,64 +9,60 @@ import {
   Param,
   Post,
   Put,
+  ParseUUIDPipe,
+  ParseEnumPipe,
 } from '@nestjs/common';
 import { MappedReport } from './data';
 import { AppService } from './app.service';
+import type { MappedReportLiteralType } from './data';
 
 @Controller('report/:type')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getAllReports(@Param('type') type: string) {
+  getAllReports(
+    @Param('type', new ParseEnumPipe(MappedReport))
+    type: MappedReportLiteralType,
+  ) {
     console.log('type === ', type);
-    const reportType =
-      type === MappedReport.expense
-        ? MappedReport.expense
-        : MappedReport.income;
-    return this.appService.getAllReports(reportType);
+    return this.appService.getAllReports(type);
   }
 
   @Get(':id')
-  getReportById(@Param('type') type: string, @Param('id') id: string) {
-    const reportType =
-      type === MappedReport.expense
-        ? MappedReport.expense
-        : MappedReport.income;
-    console.table({ type, id, reportType });
-    return this.appService.getReportById(reportType, id);
+  getReportById(
+    @Param('type', new ParseEnumPipe(MappedReport))
+    type: MappedReportLiteralType,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    console.table({ type, id });
+    return this.appService.getReportById(type, id);
   }
 
   @Post()
   createReport(
     @Body() body: { amount: number; source: string },
-    @Param('type') type: string,
+    @Param('type', new ParseEnumPipe(MappedReport))
+    type: MappedReportLiteralType,
   ) {
     console.table({ type, ...body });
-    const reportType =
-      type === MappedReport.expense
-        ? MappedReport.expense
-        : MappedReport.income;
-    return this.appService.createReport(reportType, body);
+    return this.appService.createReport(type, body);
   }
 
   @Put(':id')
   updateReport(
-    @Param('type') type: string,
-    @Param('id') id: string,
+    @Param('type', new ParseEnumPipe(MappedReport))
+    type: MappedReportLiteralType,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() body: { amount: number; source: string },
   ) {
     console.table({ id, ...body, type });
-    const reportType =
-      type === MappedReport.expense
-        ? MappedReport.expense
-        : MappedReport.income;
-    return this.appService.updateReport(reportType, id, body);
+    return this.appService.updateReport(type, id, body);
   }
 
   @HttpCode(204)
   @Delete(':id')
-  deleteReport(@Param('id') id: string) {
+  deleteReport(@Param('id', ParseUUIDPipe) id: string) {
     return this.appService.deleteReport(id);
   }
 }
