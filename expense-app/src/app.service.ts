@@ -9,6 +9,8 @@ type ReportDataType = {
   source: string;
 };
 
+type UpdateReportDataType = Partial<ReportDataType>;
+
 @Injectable()
 export class AppService {
   getAllReports(type: MappedReportLiteralType) {
@@ -40,7 +42,7 @@ export class AppService {
   updateReport(
     type: MappedReportLiteralType,
     id: string,
-    body: ReportDataType,
+    body: UpdateReportDataType,
   ) {
     const reportToUpdate = data.report
       .filter((report) => report.type === type)

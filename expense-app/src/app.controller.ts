@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { MappedReport } from './data';
 import { AppService } from './app.service';
-import { CreateReportDto } from './dtos/report.dto';
+import { CreateReportDto, UpdateReportDto } from './dtos/report.dto';
 
 import type { MappedReportLiteralType } from './data';
 
@@ -56,7 +56,7 @@ export class AppController {
     @Param('type', new ParseEnumPipe(MappedReport))
     type: MappedReportLiteralType,
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() body: CreateReportDto,
+    @Body() body: UpdateReportDto,
   ) {
     console.table({ id, ...body, type });
     return this.appService.updateReport(type, id, body);
