@@ -3,6 +3,7 @@ import { v4 as uuid } from 'uuid';
 
 import { data } from './data';
 import type { MappedReportLiteralType } from './data';
+import { ReportResponseDto } from './dtos/report.dto';
 
 type ReportDataType = {
   amount: number;
@@ -13,20 +14,26 @@ type UpdateReportDataType = Partial<ReportDataType>;
 
 @Injectable()
 export class AppService {
-  getAllReports(type: MappedReportLiteralType) {
-    return data.report.filter((report) => report.type === type);
-  }
-
-  getReportById(type: MappedReportLiteralType, id: string) {
+  getAllReports(type: MappedReportLiteralType): ReportResponseDto[] {
     return data.report
       .filter((report) => report.type === type)
+      .map((report) => new ReportResponseDto(report));
+  }
+
+  getReportById(type: MappedReportLiteralType, id: string): ReportResponseDto {
+    const report = data.report
+      .filter((report) => report.type === type)
       .find((report) => report.id === id);
+
+    if (!report) return;
+
+    return new ReportResponseDto(report);
   }
 
   createReport(
     type: MappedReportLiteralType,
     { amount, source }: ReportDataType,
-  ) {
+  ): ReportResponseDto {
     const newReport = {
       id: uuid(),
       source,
@@ -36,14 +43,14 @@ export class AppService {
       type,
     };
     data.report.push(newReport);
-    return newReport;
+    return new ReportResponseDto(newReport);
   }
 
   updateReport(
     type: MappedReportLiteralType,
     id: string,
     body: UpdateReportDataType,
-  ) {
+  ): ReportResponseDto {
     const reportToUpdate = data.report
       .filter((report) => report.type === type)
       .find((report) => report.id === id);
@@ -57,7 +64,7 @@ export class AppService {
       ...body,
       updated_at: new Date(),
     };
-    return data.report[reportIndex];
+    return new ReportResponseDto(data.report[reportIndex]);
   }
 
   deleteReport(id: string) {

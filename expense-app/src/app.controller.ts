@@ -14,7 +14,11 @@ import {
 } from '@nestjs/common';
 import { MappedReport } from './data';
 import { AppService } from './app.service';
-import { CreateReportDto, UpdateReportDto } from './dtos/report.dto';
+import {
+  CreateReportDto,
+  ReportResponseDto,
+  UpdateReportDto,
+} from './dtos/report.dto';
 
 import type { MappedReportLiteralType } from './data';
 
@@ -26,7 +30,7 @@ export class AppController {
   getAllReports(
     @Param('type', new ParseEnumPipe(MappedReport))
     type: MappedReportLiteralType,
-  ) {
+  ): ReportResponseDto[] {
     console.log('type === ', type);
     return this.appService.getAllReports(type);
   }
@@ -36,7 +40,7 @@ export class AppController {
     @Param('type', new ParseEnumPipe(MappedReport))
     type: MappedReportLiteralType,
     @Param('id', ParseUUIDPipe) id: string,
-  ) {
+  ): ReportResponseDto {
     console.table({ type, id });
     return this.appService.getReportById(type, id);
   }
@@ -46,7 +50,7 @@ export class AppController {
     @Body() body: CreateReportDto,
     @Param('type', new ParseEnumPipe(MappedReport))
     type: MappedReportLiteralType,
-  ) {
+  ): ReportResponseDto {
     console.table({ type, ...body });
     return this.appService.createReport(type, body);
   }
@@ -57,7 +61,7 @@ export class AppController {
     type: MappedReportLiteralType,
     @Param('id', ParseUUIDPipe) id: string,
     @Body() body: UpdateReportDto,
-  ) {
+  ): ReportResponseDto {
     console.table({ id, ...body, type });
     return this.appService.updateReport(type, id, body);
   }
