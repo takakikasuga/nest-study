@@ -1,0 +1,76 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  id Int [pk, increment]
+  name String [not null]
+  phone String [not null]
+  email String [not null]
+  password String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updateAt DateTime [not null]
+  userType UserType [not null]
+  homes Home [not null]
+  buyerMessages Message [not null]
+  realtorMessages Message [not null]
+}
+
+Table Home {
+  id Int [pk, increment]
+  address String [not null]
+  numberOfBedrooms Int [not null]
+  numberOfBathrooms Float [not null]
+  city String [not null]
+  listedDate DateTime [default: `now()`, not null]
+  price Float [not null]
+  landSize Float [not null]
+  propertyType PropertyType [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updateAt DateTime [not null]
+  images Image [not null]
+  realtorId Int [not null]
+  realtor User [not null]
+  messages Message [not null]
+}
+
+Table Image {
+  id Int [pk, increment]
+  url String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updateAt DateTime [not null]
+  homeId Int [not null]
+  home Home [not null]
+}
+
+Table Message {
+  id Int [pk, increment]
+  message String [not null]
+  homeId Int [not null]
+  home Home [not null]
+  realtorId Int [not null]
+  realtor User [not null]
+  buyerId Int [not null]
+  buyer User [not null]
+}
+
+Enum PropertyType {
+  RESIDENTIAL
+  CONDO
+}
+
+Enum UserType {
+  BUYER
+  REALTOR
+  ADMIN
+}
+
+Ref: Home.realtorId > User.id
+
+Ref: Image.homeId > Home.id
+
+Ref: Message.homeId > Home.id
+
+Ref: Message.realtorId > User.id
+
+Ref: Message.buyerId > User.id
