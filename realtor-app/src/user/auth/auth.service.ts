@@ -1,6 +1,7 @@
 import { Injectable, ConflictException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcryptjs';
+import * as jwt from 'jsonwebtoken';
 import { UserType } from '@prisma/client';
 
 type SignupParams = {
@@ -32,6 +33,18 @@ export class AuthService {
         userType: UserType.BUYER,
       },
     });
-    return user;
+
+    const token = await jwt.sign(
+      {
+        name,
+        id: user.id,
+      },
+      process.env.JSON_TOKEN_KEY,
+      {
+        expiresIn: 3600,
+      },
+    );
+
+    return token;
   }
 }
