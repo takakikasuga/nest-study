@@ -23,7 +23,8 @@
     "prisma:db:push": "prisma db push",
     "prisma:format": "prisma format",
     "prisma:migrate:dev": "prisma migrate dev",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "prisma:reset": "prisma migrate reset"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
