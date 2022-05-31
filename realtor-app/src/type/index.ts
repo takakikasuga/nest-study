@@ -12,3 +12,13 @@ export type CreateHomeParams = {
   propertyType: PropertyType;
   images: { url: string }[];
 };
+
+export type UpdateHomeParams = {
+  address?: string;
+  numberOfBedrooms?: number;
+  numberOfBathrooms?: number;
+  city?: string;
+  price?: number;
+  landSize?: number;
+  propertyType?: PropertyType;
+};
