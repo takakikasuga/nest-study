@@ -15,8 +15,8 @@ import {
 } from 'src/user/dtos/auth.dto';
 import * as bcrypt from 'bcryptjs';
 import { AuthService } from './auth.service';
-import { User } from 'src/decorators/user.decorator';
-import { UserAuthType } from 'src/type';
+import { User } from 'src/user/decorators/user.decorator';
+import type { UserAuthType } from 'src/type';
 
 @Controller('auth')
 export class AuthController {
