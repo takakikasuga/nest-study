@@ -29,3 +29,10 @@ export type UserAuthType = {
   iat: number;
   exp: number;
 };
+
+export type JWTPayloadType = {
+  name: string;
+  id: number;
+  iat: number;
+  exp: number;
+};
