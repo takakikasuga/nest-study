@@ -5,6 +5,7 @@ import type {
   CreateHomeParams,
   HomeWhereInput,
   UpdateHomeParams,
+  UserAuthType,
 } from 'src/type';
 
 @Injectable()
@@ -149,5 +150,25 @@ export class HomeService {
     }
     console.log(home);
     return home.realtor;
+  }
+
+  async inquire(buyer: UserAuthType, homeId: number, message: string) {
+    const realtor = await this.getRealtorByHomeId(homeId);
+    return await this.prismaService.message.create({
+      data: {
+        realtorId: realtor.id,
+        buyerId: buyer.id,
+        homeId,
+        message,
+      },
+    });
+  }
+
+  async getMessageByHomeId(homeId: number) {
+    return await this.prismaService.message.findMany({
+      where: {
+        homeId,
+      },
+    });
   }
 }
